@@ -3,8 +3,8 @@ import os
 
 
 i_saturation_percentage = 0
-directory_to_copy = "C:/Users/jacks/AppData/Roaming/.minecraft/resourcepacks/Vanilla textures 1.21.8/assets/minecraft/textures"
-directory_to_paste = "C:/Users/jacks/AppData/Roaming/.minecraft/resourcepacks/Vanilla textures 1.21.8 saturation test 90%/assets/minecraft/textures"
+directory_to_copy = "C:/Users/jacks/AppData/Roaming/.minecraft/resourcepacks/vanilla TexturePack/assets/minecraft"
+directory_to_paste = "C:/Users/jacks/AppData/Roaming/.minecraft/resourcepacks/Desat test pack/assets/minecraft"
 
 
 def change_color(directory, save_dir):
@@ -37,8 +37,6 @@ def recurse_strange_folders(directory, altered_directory):
 def __main__ ():
     altar_dir = directory_to_copy
     save_dir = directory_to_paste
-
-    textureList = os.listdir(altar_dir + "/block")
 
     for folder in os.listdir(altar_dir):
         recurse_strange_folders(f"{altar_dir}/{folder}", f"{save_dir}/{folder}")
