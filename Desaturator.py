@@ -3,8 +3,8 @@ import os
 
 
 i_saturation_percentage = 0
-directory_to_copy = "C:/Users/jacks/AppData/Roaming/.minecraft/resourcepacks/vanilla TexturePack/assets/minecraft"
-directory_to_paste = "C:/Users/jacks/AppData/Roaming/.minecraft/resourcepacks/Desat test pack/assets/minecraft"
+directory_to_copy = "C:/Users/jacks/AppData/Roaming/.minecraft/resourcepacks/Vanilla textures 1.21.8/assets/minecraft"
+directory_to_paste = "C:/Users/jacks/AppData/Roaming/.minecraft/resourcepacks/Vanilla textures 1.21.8 saturation test 90%/assets/minecraft"
 
 
 def change_color(directory, save_dir):
@@ -18,6 +18,9 @@ def change_color(directory, save_dir):
 
     print(directory)
 
+    if (directory[-8:] == "sky.png"):
+        desaturated_image.putpixel((0, 12), "79A6FF")
+
     desaturated_image.save(save_dir)
 
 
@@ -25,9 +28,9 @@ def change_color(directory, save_dir):
 def recurse_strange_folders(directory, altered_directory):
     assets_list = os.listdir(directory)
     for asset in assets_list:
-        if asset[-4:] == ".png":
+        if asset[-4:] == ".png" or asset[-4:] == ".PNG":
             change_color(f"{directory}/{asset}",f"{altered_directory}/{asset}")
-        elif asset[-7:] == ".mcmeta":
+        elif asset[-7:] == ".mcmeta" or asset[-11:] == ".properties":
             pass
         else:
             recurse_strange_folders(f"{directory}/{asset}",f"{altered_directory}/{asset}")
@@ -42,22 +45,7 @@ def __main__ ():
         recurse_strange_folders(f"{altar_dir}/{folder}", f"{save_dir}/{folder}")
 
 
-        # if (folder == "effect" or folder == "font"):
-        #     pass
-        # elif (folder == "entity" or folder == "gui" or folder == "map" or folder == "trims"):
-        #     recurse_strange_folders(f"{altar_dir}/{folder}", f"{save_dir}/{folder}")
-        # else:
-        #     pass
-        #     textureList = os.listdir(f"{altar_dir}/{folder}")
-        #     for image in textureList:
-        #         if(image[-1] == 'g'):
-        #             change_color(f"{altar_dir}/{folder}/{image}",f"{save_dir}/{folder}/{image}")
-        
-
-    # print(textureList)
-
-
-    # desaturated_image.show()
+    
 
 
 __main__()
