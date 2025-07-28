@@ -3,8 +3,8 @@ import os
 
 
 i_saturation_percentage = 0
-directory_to_copy = "C:/Users/jacks/AppData/Roaming/.minecraft/resourcepacks/Vanilla textures 1.21.8/assets/minecraft"
-directory_to_paste = "C:/Users/jacks/AppData/Roaming/.minecraft/resourcepacks/Vanilla textures 1.21.8 saturation test 90%/assets/minecraft"
+directory_to_copy = "C:/Users/jacks/AppData/Roaming/.minecraft/vanilla optifine pack for now/vanilla TexturePack/assets/minecraft"
+directory_to_paste = "C:/Users/jacks/AppData/Roaming/.minecraft/resourcepacks/Desat test pack/assets/minecraft"
 
 
 def change_color(directory, save_dir):
@@ -18,8 +18,10 @@ def change_color(directory, save_dir):
 
     print(directory)
 
-    if (directory[-8:] == "sky.png"):
-        desaturated_image.putpixel((0, 12), "79A6FF")
+    if (directory[-8:] == "sky0.png"):
+        desaturated_image.putpixel((12, 0), (121,166,255, 255))
+    elif (directory[-8:] == "fog0.png"):
+        desaturated_image.putpixel((12,0),(192,216, 255, 255))
 
     desaturated_image.save(save_dir)
 
