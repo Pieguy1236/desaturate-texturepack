@@ -3,8 +3,9 @@ import os
 
 
 i_saturation_percentage = 0
-directory_to_copy = "C:/Users/jacks/AppData/Roaming/.minecraft/vanilla optifine pack for now/vanilla TexturePack/assets/minecraft"
-directory_to_paste = "C:/Users/jacks/AppData/Roaming/.minecraft/resourcepacks/Desat test pack/assets/minecraft"
+directory_to_copy = "C:/Users/jacks/curseforge/minecraft/Instances/FabulousSMP/resourcepacks/vanilla TexturePack/assets"
+directory_to_paste = "C:/Users/jacks/curseforge/minecraft/Instances/FabulousSMP/resourcepacks/vanilla TexturePack - Copy/assets"
+non_image_recursive_exceptions = ["cherry_grove.json", "colors.json"]
 
 
 def change_color(directory, save_dir):
@@ -18,13 +19,54 @@ def change_color(directory, save_dir):
 
     print(directory)
 
-    if (directory[-8:] == "sky0.png"):
-        desaturated_image.putpixel((12, 0), (121,166,255, 255))
-    elif (directory[-8:] == "fog0.png"):
-        desaturated_image.putpixel((12,0),(192,216, 255, 255))
-
     desaturated_image.save(save_dir)
 
+
+def change_hex_color(directory, altered_directory):
+    file = open(directory, 'w')
+
+    
+
+
+
+
+# used to convert non-image hexidecimal to HSV (hue, saturation, value) as to directly affect the saturation (S) using i_saturation_percentage 
+def convert_hex_to_HSV(hex_str):
+    #covert Hex values to ints so they can be divided
+    red = int(hex_str[0:2], 16)/255
+    green = int(hex_str[2:4], 16)/255
+    blue = int(hex_str[4:6], 16)/255
+
+    C_max = max(red,green,blue)
+    C_min = min(red,green,blue)
+
+    C_delta = C_max - C_min
+
+    if C_delta == 0:
+        H = 0
+    elif C_max == red:
+        H = 60 * (((green - blue)/C_delta) % 6)
+    elif C_max == green:
+        H = 60 * (((blue-red)/C_delta) + 2)
+    elif C_max == blue:
+        H = 60 * (((red-green)/C_delta)+4)
+
+    if C_max == 0:
+        S = 0
+    else:
+        S = C_delta/C_max
+
+    V = C_max
+
+    return H,S,V
+
+
+
+def test_against_exception(directory):
+    for word in non_image_recursive_exceptions:
+        if word == directory[-1*word.len():]:
+            return True
+    return False
 
 
 def recurse_strange_folders(directory, altered_directory):
@@ -32,8 +74,11 @@ def recurse_strange_folders(directory, altered_directory):
     for asset in assets_list:
         if asset[-4:] == ".png" or asset[-4:] == ".PNG":
             change_color(f"{directory}/{asset}",f"{altered_directory}/{asset}")
-        elif asset[-7:] == ".mcmeta" or asset[-11:] == ".properties":
-            pass
+        elif asset[-7:] == ".mcmeta" or asset[-11:] == ".properties" or asset[-4:] == ".log" or asset[-5:] == ".json":
+            if (test_against_exception(directory)):
+                change_hex_color(directory, altered_directory)
+            else:
+                pass
         else:
             recurse_strange_folders(f"{directory}/{asset}",f"{altered_directory}/{asset}")
             
